@@ -1,5 +1,4 @@
 version: '3'
-
 services:
   postgres:
     image: 'postgres:latest'
@@ -23,7 +22,6 @@ services:
       - PGDATABASE=postgres
       - PGPASSWORD=postgres_password
       - PGPORT=5432
-
   client:
     stdin_open: true
     build:
@@ -32,7 +30,6 @@ services:
     volumes:
       - /app/node_modules
       - ./client:/app
-
   worker:
     build:
       dockerfile: Dockerfile.dev
@@ -45,6 +42,9 @@ services:
       - REDIS_PORT=6379
 
   nginx:
+    depends_on:
+      - api
+      - client
     restart: always
     build:
       dockerfile: Dockerfile.dev
